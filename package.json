@@ -1,0 +1,19 @@
+{
+  "name": "hp-renderer",
+  "version": "1.0.0",
+  "description": "学生団体連合会本部のHPレンダリングエンジンです。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tcu-sto/hp-renderer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tcu-sto/hp-renderer/issues"
+  },
+  "homepage": "https://github.com/tcu-sto/hp-renderer#readme"
+}

@@ -1,8 +1,8 @@
 'use strict';
 
 const { createClient } = require('microcms-js-sdk');
-const fs = require('fs').promises;
-const fsd = require('fs');
+const fsp = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
 const sharp = require('sharp');
@@ -31,25 +31,14 @@ async.series([
     async () => await affiliate(),
     async () => await optimizeImage(assetsPath, assetsPath)
 ]);
-/*
-Promise.all([
-    fileExists(buildPath),
-    fileExists(assetsPath),
-    feed(),
-    affiliate(),
-    optimizeImage(assetsPath, assetsPath)
-])
-    .then(() => console.log('All operations completed.'))
-    .catch(error => console.error(error));
-*/
 
 async function fileExists(path) {
     try {
-        await fs.access(path);
+        await fsp.access(path);
         return true;
     } catch (error) {
         if (error.code === 'ENOENT') {
-            await fs.mkdir(path);
+            await fsp.mkdir(path);
             return false;
         } else {
             throw error;
@@ -68,7 +57,7 @@ async function feed() {
             });
             await Promise.all(saveImagePromises);
 
-            await fs.writeFile(`${buildPath}/${endpoint}.json`, JSON.stringify(res));
+            await fsp.writeFile(`${buildPath}/${endpoint}.json`, JSON.stringify(res));
         } catch (err) {
             console.error(err);
         }
@@ -88,7 +77,7 @@ async function affiliate() {
             });
             await Promise.all(saveImagePromises);
 
-            await fs.writeFile(`${buildPath}/${endpoint}.json`, JSON.stringify(res));
+            await fsp.writeFile(`${buildPath}/${endpoint}.json`, JSON.stringify(res));
         } catch (err) {
             console.error(err);
         }
@@ -105,7 +94,7 @@ async function saveImage(url, destPath) {
             throw new Error(`HTTPエラー: ${response.status}`);
         }
 
-        const fileStream = fsd.createWriteStream(path.join(destPath, path.basename(url)));
+        const fileStream = fs.createWriteStream(path.join(destPath, path.basename(url)));
 
         await new Promise((resolve, reject) => {
             response.body.pipe(fileStream);
@@ -125,7 +114,7 @@ async function saveImage(url, destPath) {
 
 async function optimizeImage(importDir, exportDir) {
     try {
-        const files = await fs.readdir(importDir);
+        const files = await fsp.readdir(importDir);
 
         for (const file of files) {
             const imagePath = path.join(importDir, file);
